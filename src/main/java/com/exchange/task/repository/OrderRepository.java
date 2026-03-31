@@ -9,5 +9,6 @@ public interface OrderRepository {
     Order save(Order order);
     Optional<Order> findById(String id);
     Optional<Order> findByUserIdAndClientOrderId(String userId, String clientOrderId);
+    void deleteById(String id);
     List<Order> findAll();
 }

@@ -11,24 +11,34 @@ public class InMemoryOrderRepository implements OrderRepository {
 
     @Override
     public Order save(Order order) {
-        orders.put(order.getId(), order);
-        return order;
+        Order storedOrder = order.copy();
+        orders.put(storedOrder.getId(), storedOrder);
+        return storedOrder.copy();
     }
 
     @Override
     public Optional<Order> findById(String id) {
-        return Optional.ofNullable(orders.get(id));
+        return Optional.ofNullable(orders.get(id))
+                .map(Order::copy);
     }
 
     @Override
     public Optional<Order> findByUserIdAndClientOrderId(String userId, String clientOrderId) {
         return orders.values().stream()
                 .filter(o -> o.getUserId().equals(userId) && o.getClientOrderId().equals(clientOrderId))
+                .map(Order::copy)
                 .findFirst();
     }
 
     @Override
+    public void deleteById(String id) {
+        orders.remove(id);
+    }
+
+    @Override
     public List<Order> findAll() {
-        return new ArrayList<>(orders.values());
+        return orders.values().stream()
+                .map(Order::copy)
+                .toList();
     }
 }

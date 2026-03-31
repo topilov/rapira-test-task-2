@@ -1,5 +1,8 @@
 package com.exchange.task.model;
 
+import com.exchange.task.exception.BalanceStateException;
+import com.exchange.task.exception.InsufficientBalanceException;
+
 import java.math.BigDecimal;
 
 public class UserBalance {
@@ -21,15 +24,36 @@ public class UserBalance {
         return availableUsdt;
     }
 
-    public void setAvailableUsdt(BigDecimal availableUsdt) {
-        this.availableUsdt = availableUsdt;
-    }
-
     public BigDecimal getReservedUsdt() {
         return reservedUsdt;
     }
 
-    public void setReservedUsdt(BigDecimal reservedUsdt) {
-        this.reservedUsdt = reservedUsdt;
+    public void reserve(BigDecimal amount) {
+        requirePositive(amount);
+        if (availableUsdt.compareTo(amount) < 0) {
+            throw new InsufficientBalanceException("insufficient balance");
+        }
+
+        availableUsdt = availableUsdt.subtract(amount);
+        reservedUsdt = reservedUsdt.add(amount);
+    }
+
+    public void release(BigDecimal amount) {
+        requirePositive(amount);
+        if (reservedUsdt.compareTo(amount) < 0) {
+            throw new BalanceStateException("reserved balance is insufficient");
+        }
+        reservedUsdt = reservedUsdt.subtract(amount);
+        availableUsdt = availableUsdt.add(amount);
+    }
+
+    public UserBalance copy() {
+        return new UserBalance(userId, availableUsdt, reservedUsdt);
+    }
+
+    private void requirePositive(BigDecimal amount) {
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("amount must be positive");
+        }
     }
 }

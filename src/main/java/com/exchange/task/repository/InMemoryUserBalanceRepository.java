@@ -22,12 +22,14 @@ public class InMemoryUserBalanceRepository implements UserBalanceRepository {
 
     @Override
     public Optional<UserBalance> findByUserId(String userId) {
-        return Optional.ofNullable(storage.get(userId));
+        return Optional.ofNullable(storage.get(userId))
+                .map(UserBalance::copy);
     }
 
     @Override
     public UserBalance save(UserBalance balance) {
-        storage.put(balance.getUserId(), balance);
-        return balance;
+        UserBalance storedBalance = balance.copy();
+        storage.put(storedBalance.getUserId(), storedBalance);
+        return storedBalance.copy();
     }
 }
