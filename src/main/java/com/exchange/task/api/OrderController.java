@@ -18,7 +18,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(@RequestBody CreateOrderRequest request) {
-        CreateOrderResult result = orderService.createLimitBuyOrderResult(
+        CreateOrderResult result = orderService.createLimitBuyOrder(
                 request.getClientOrderId(),
                 request.getUserId(),
                 request.getSymbol(),

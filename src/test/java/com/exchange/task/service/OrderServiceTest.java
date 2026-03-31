@@ -114,7 +114,7 @@ class OrderServiceTest {
             OrderService orderService = new OrderService(orderRepository, balanceRepository);
 
             assertThrows(RuntimeException.class,
-                    () -> orderService.createLimitBuyOrderResult(
+                    () -> orderService.createLimitBuyOrder(
                             CLIENT_ORDER_ID,
                             USER_ID,
                             SYMBOL,
@@ -136,7 +136,7 @@ class OrderServiceTest {
             OrderService orderService = new OrderService(orderRepository, balanceRepository);
 
             assertThrows(RuntimeException.class,
-                    () -> orderService.createLimitBuyOrderResult(
+                    () -> orderService.createLimitBuyOrder(
                             CLIENT_ORDER_ID,
                             USER_ID,
                             SYMBOL,
@@ -190,7 +190,7 @@ class OrderServiceTest {
             InMemoryUserBalanceRepository balanceRepository = new InMemoryUserBalanceRepository();
             OrderService orderService = new OrderService(orderRepository, balanceRepository);
             balanceRepository.save(new UserBalance(USER_ID, new BigDecimal("1000.00"), BigDecimal.ZERO));
-            Order created = orderService.createLimitBuyOrderResult(
+            Order created = orderService.createLimitBuyOrder(
                     CLIENT_ORDER_ID,
                     USER_ID,
                     SYMBOL,
@@ -217,7 +217,7 @@ class OrderServiceTest {
             FailNextBalanceSaveRepository balanceRepository = new FailNextBalanceSaveRepository();
             OrderService orderService = new OrderService(orderRepository, balanceRepository);
             balanceRepository.save(new UserBalance(USER_ID, new BigDecimal("1000.00"), BigDecimal.ZERO));
-            Order created = orderService.createLimitBuyOrderResult(
+            Order created = orderService.createLimitBuyOrder(
                     CLIENT_ORDER_ID,
                     USER_ID,
                     SYMBOL,
@@ -251,7 +251,7 @@ class OrderServiceTest {
         }
 
         Order createLimitBuyOrder(String clientOrderId, String userId, String symbol, String price, String quantity) {
-            return orderService.createLimitBuyOrderResult(
+            return orderService.createLimitBuyOrder(
                     clientOrderId,
                     userId,
                     symbol,

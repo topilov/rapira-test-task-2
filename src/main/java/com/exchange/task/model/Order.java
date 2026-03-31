@@ -15,23 +15,23 @@ public class Order {
     private OrderStatus status;
 
     public Order(String clientOrderId, String userId, String symbol, BigDecimal price, BigDecimal quantity) {
-        this(UUID.randomUUID().toString(), clientOrderId, userId, symbol, price, quantity, OrderStatus.NEW);
-    }
-
-    private Order(String id,
-                  String clientOrderId,
-                  String userId,
-                  String symbol,
-                  BigDecimal price,
-                  BigDecimal quantity,
-                  OrderStatus status) {
-        this.id = id;
+        this.id = UUID.randomUUID().toString();
         this.clientOrderId = clientOrderId;
         this.userId = userId;
         this.symbol = symbol;
         this.price = price;
         this.quantity = quantity;
-        this.status = status;
+        this.status = OrderStatus.NEW;
+    }
+
+    private Order(Order source) {
+        this.id = source.id;
+        this.clientOrderId = source.clientOrderId;
+        this.userId = source.userId;
+        this.symbol = source.symbol;
+        this.price = source.price;
+        this.quantity = source.quantity;
+        this.status = source.status;
     }
 
     public String getId() {
@@ -80,6 +80,6 @@ public class Order {
     }
 
     public Order copy() {
-        return new Order(id, clientOrderId, userId, symbol, price, quantity, status);
+        return new Order(this);
     }
 }

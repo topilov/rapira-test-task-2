@@ -23,7 +23,7 @@ public class OrderService {
         this.userBalanceRepository = userBalanceRepository;
     }
 
-    public CreateOrderResult createLimitBuyOrderResult(String clientOrderId, String userId, String symbol, BigDecimal price, BigDecimal quantity) {
+    public CreateOrderResult createLimitBuyOrder(String clientOrderId, String userId, String symbol, BigDecimal price, BigDecimal quantity) {
         validateCreateRequest(clientOrderId, userId, symbol, price, quantity);
 
         Order existingOrder = orderRepository.findByUserIdAndClientOrderId(userId, clientOrderId).orElse(null);
